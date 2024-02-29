@@ -1,6 +1,5 @@
 import {
   type BaseRecord,
-  type HttpError,
   type GetListParams,
   type GetListResponse,
   type GetManyParams,
@@ -37,31 +36,6 @@ export type DataParams = ClientParams;
  */
 
 class DataClient extends Client {
-  constructor(params: DataParams) {
-    super(params);
-    this.instance.interceptors.response.use(
-      (response) => {
-        if ("message" in response.data) {
-          response.data = response.data.message;
-        }
-        else if (Object.keys(response.data).length === 1 && "data" in response.data) {
-          response.data = response.data.data;
-        }
-
-        return response;
-      },
-      (error) => {
-        const customError: HttpError = {
-          ...error,
-          message: error.response?.data?.message,
-          statusCode: error.response?.status,
-        };
-
-        return Promise.reject(customError);
-      },
-    );
-  }
-
   async getList<
     TData extends BaseRecord = BaseRecord,
   >(

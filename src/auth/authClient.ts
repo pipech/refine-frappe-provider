@@ -84,7 +84,6 @@ class AuthClient extends Client {
         },
         method: "POST",
         url: "/api/method/login",
-        withCredentials: true,
       });
 
       return {
@@ -116,7 +115,6 @@ class AuthClient extends Client {
       await this.instance.request({
         method: "POST",
         url: "/api/method/logout",
-        withCredentials: true,
       });
 
       return {
