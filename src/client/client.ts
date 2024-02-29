@@ -8,7 +8,7 @@ import axios, {
 
 export interface ClientParams {
   url: string;
-  axiosConfig: Partial<CreateAxiosDefaults>;
+  axiosConfig?: Partial<CreateAxiosDefaults>;
 }
 
 export class Client {
@@ -17,7 +17,7 @@ export class Client {
 
   constructor(params: ClientParams) {
     const {
-      axiosConfig,
+      axiosConfig = {},
       url,
     } = params;
     const {

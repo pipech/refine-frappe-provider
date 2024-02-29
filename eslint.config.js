@@ -87,6 +87,7 @@ const config = [
         braceStyle: "stroustrup",
         commaDangle: "always-multiline",
         flat: true,
+        // eslint-disable-next-line no-magic-numbers
         indent: 2,
         jsx: true,
         pluginName: "pluginStylistic",

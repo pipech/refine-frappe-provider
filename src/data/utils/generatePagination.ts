@@ -7,14 +7,14 @@ type FrappePagination = {
   limit_page_length: number;
 };
 
-export const generatePagination = (props: Pagination | undefined): FrappePagination => {
+export const generatePagination = (props: Pagination | undefined = {}): FrappePagination => {
   const DEFAULT_PAGE_SIZE = 10;
   const DEFAULT_PAGE = 1;
 
   const {
     current = DEFAULT_PAGE,
     pageSize = DEFAULT_PAGE_SIZE,
-  } = props || {};
+  } = props;
 
   return {
     limit_page_length: pageSize,

@@ -11,11 +11,11 @@ class AccessControlClient extends Client {
   async can(params: CanParams): Promise<CanReturnType> {
     const {
       action,
-      params: canParams,
+      params: canParams = {},
       resource,
     } = params;
 
-    const { id } = canParams || {};
+    const { id } = canParams;
 
     const {
       data: { has_permission },
