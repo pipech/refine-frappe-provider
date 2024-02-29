@@ -53,6 +53,7 @@ describe("unhappy auth path", () => {
     });
 
     expect(r.success).toBe(false);
+    expect(r.error?.message).toBe("Invalid login credentials");
 
     const cookies = await jar.getCookies();
     expect(cookies.length).toBe(0);
@@ -62,6 +63,5 @@ describe("unhappy auth path", () => {
     const r = await authClient.check({});
 
     expect(r.authenticated).toBe(false);
-    expect(r.error?.message).toBe("Not logged in.");
   });
 });

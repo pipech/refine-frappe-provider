@@ -1,8 +1,10 @@
-import { type AuthProvider } from "@refinedev/core";
-import { isAxiosError } from "axios";
+import {
+  HttpError,
+  type AuthProvider,
+} from "@refinedev/core";
 
 import { Client, ClientParams } from "@/client";
-import { HttpStatusCode } from "@/utils";
+import { handleUnkownError } from "@/utils";
 
 export type AuthParams = ClientParams;
 
@@ -20,7 +22,7 @@ export type AuthActionSuccessResponse = {
 export type AuthActionFailureResponse = {
   success: false;
   redirectTo?: string;
-  error: Error;
+  error: Error | HttpError;
 };
 export type AuthActionResponse = AuthActionSuccessResponse | AuthActionFailureResponse;
 
@@ -92,17 +94,11 @@ class AuthClient extends Client {
       };
     }
     catch (error: unknown) {
-      if (isAxiosError(error)) {
-        if (error.response?.status === HttpStatusCode.Unauthorized) {
-          return {
-            error: new Error("Invalid username or password."),
-            success: false,
-          };
-        }
-      }
-
       return {
-        error: new Error("An unknown error occurred while logging in."),
+        error: handleUnkownError({
+          error,
+          errorWhile: "logging in",
+        }),
         success: false,
       };
     }
@@ -124,7 +120,10 @@ class AuthClient extends Client {
     }
     catch (error: unknown) {
       return {
-        error: new Error("An unknown error occurred while logging out."),
+        error: handleUnkownError({
+          error,
+          errorWhile: "logging out",
+        }),
         redirectTo,
         success: false,
       };
@@ -145,28 +144,23 @@ class AuthClient extends Client {
       };
     }
     catch (error: unknown) {
-      if (isAxiosError(error)) {
-        if (error.response?.status === HttpStatusCode.Forbidden) {
-          return {
-            authenticated: false,
-            error: new Error("Not logged in."),
-          };
-        }
-      }
-
       return {
         authenticated: false,
-        error: new Error("An unknown error occurred while checking credentials."),
+        error: handleUnkownError({
+          error,
+          errorWhile: "checking authentication",
+        }),
       };
     }
   }
 
   // eslint-disable-next-line class-methods-use-this
   onError(error: unknown): Promise<OnErrorResponse> {
-    const response: OnErrorResponse = {};
-    if (error instanceof Error) {
-      response.error = error;
-    }
+    const response: OnErrorResponse = {
+      error: handleUnkownError({
+        error,
+      }),
+    };
 
     return Promise.resolve(response);
   }
