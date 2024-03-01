@@ -15,7 +15,7 @@ class AccessControlClient extends Client {
       resource,
     } = params;
 
-    const { id } = canParams;
+    const { id = "" } = canParams;
 
     const {
       data: { has_permission },
@@ -32,7 +32,7 @@ class AccessControlClient extends Client {
     });
 
     return {
-      can: has_permission,
+      can: Boolean(has_permission),
     };
   }
 }

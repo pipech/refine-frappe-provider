@@ -139,6 +139,9 @@ const config = [
       // eslint-js
       "max-lines-per-function": "off",
       "no-magic-numbers": "off",
+
+      // PluginTypescript
+      "@typescript-eslint/ban-ts-comment": "off",
     },
   },
 ];

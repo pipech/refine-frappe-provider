@@ -9,7 +9,8 @@ export type ProviderTestConfig = {
 
   /**
    * Username to login to the Frappe server
-   * @example "administrator"
+   * should be non-admin, System User
+   * @example "test@e2e.com"
    */
   usr: string;
   /**
@@ -20,6 +21,7 @@ export type ProviderTestConfig = {
 
   /**
    * Token of administrator of the Frappe server
+   * should be non-admin, System User
    * @example "5e4594664747d01:6604a01e77049a5"
    */
   token: string;

@@ -49,9 +49,12 @@ export class Client {
         return response;
       },
       (error) => {
+        const errorMsg = error.response?.data?.message
+          || error.response?.statusText
+          || error.response?.data?.exc_type;
+
         const customError: HttpError = {
-          ...error,
-          message: error.response?.data?.message,
+          message: errorMsg,
           statusCode: error.response?.status,
         };
 
