@@ -1,78 +1,16 @@
-import {
-  HttpError,
-  type AuthProvider,
-} from "@refinedev/core";
-
 import { Client, ClientParams } from "@/client";
 import { handleUnkownError } from "@/utils";
 
+import {
+  AuthActionResponse,
+  LoginParams,
+  LogoutParams,
+  CheckParams,
+  CheckResponse,
+  OnErrorResponse,
+} from "./authType";
+
 export type AuthParams = ClientParams;
-
-/**
- * --------------------------------------------------
- * AuthAction
- * --------------------------------------------------
- */
-
-export type AuthActionSuccessResponse = {
-  success: true;
-  redirectTo?: string;
-  error?: never;
-};
-export type AuthActionFailureResponse = {
-  success: false;
-  redirectTo?: string;
-  error: Error | HttpError;
-};
-export type AuthActionResponse = AuthActionSuccessResponse | AuthActionFailureResponse;
-
-/**
- * --------------------------------------------------
- * Login
- * --------------------------------------------------
- */
-
-export type LoginParams = {
-  usr: string;
-  pwd: string;
-  redirectTo?: string;
-};
-
-/**
- * --------------------------------------------------
- * Logout
- * --------------------------------------------------
- */
-
-export type LogoutParams = {
-  redirectTo?: string;
-};
-
-/**
- * --------------------------------------------------
- * Check
- * --------------------------------------------------
- */
-
-export type CheckParams = {
-  redirectTo?: string;
-};
-
-export type CheckResponse = Awaited<ReturnType<AuthProvider["check"]>>;
-
-/**
- * --------------------------------------------------
- * OnError
- * --------------------------------------------------
- */
-
-export type OnErrorResponse = Awaited<ReturnType<AuthProvider["onError"]>>;
-
-/**
- * **************************************************
- * Client
- * **************************************************
- */
 
 class AuthClient extends Client {
   async login(params: LoginParams): Promise<AuthActionResponse> {
