@@ -5,17 +5,13 @@ import {
 
 import { Client, ClientParams } from "@/client";
 
+import { tCanParams } from "./accessControlTransformer";
+
 export type AccessControlParams = ClientParams;
 
 class AccessControlClient extends Client {
   async can(params: CanParams): Promise<CanReturnType> {
-    const {
-      action,
-      params: canParams = {},
-      resource,
-    } = params;
-
-    const { id = "" } = canParams;
+    const fpParams = tCanParams(params);
 
     const {
       data: { has_permission },
@@ -23,11 +19,7 @@ class AccessControlClient extends Client {
       has_permission: boolean;
     }>({
       method: "GET",
-      params: {
-        docname: id,
-        doctype: resource,
-        perm_type: action,
-      },
+      params: fpParams,
       url: "/api/method/frappe.client.has_permission",
     });
 
