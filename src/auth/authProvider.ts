@@ -7,9 +7,7 @@ import AuthClient, { AuthParams } from "./authClient";
 const authProvider = (
   params: AuthParams,
 ): AuthProvider => {
-  const { url } = params;
-
-  const client = new AuthClient({ url });
+  const client = new AuthClient(params);
 
   return {
     check: client.check,

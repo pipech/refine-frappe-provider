@@ -1,76 +1,16 @@
-import { type AuthProvider } from "@refinedev/core";
-import { isAxiosError } from "axios";
-
 import { Client, ClientParams } from "@/client";
-import { HttpStatusCode } from "@/utils";
+import { handleUnkownError } from "@/utils";
+
+import {
+  AuthActionResponse,
+  LoginParams,
+  LogoutParams,
+  CheckParams,
+  CheckResponse,
+  OnErrorResponse,
+} from "./authType";
 
 export type AuthParams = ClientParams;
-
-/**
- * --------------------------------------------------
- * AuthAction
- * --------------------------------------------------
- */
-
-export type AuthActionSuccessResponse = {
-  success: true;
-  redirectTo?: string;
-  error?: never;
-};
-export type AuthActionFailureResponse = {
-  success: false;
-  redirectTo?: string;
-  error: Error;
-};
-export type AuthActionResponse = AuthActionSuccessResponse | AuthActionFailureResponse;
-
-/**
- * --------------------------------------------------
- * Login
- * --------------------------------------------------
- */
-
-export type LoginParams = {
-  usr: string;
-  pwd: string;
-  redirectTo?: string;
-};
-
-/**
- * --------------------------------------------------
- * Logout
- * --------------------------------------------------
- */
-
-export type LogoutParams = {
-  redirectTo?: string;
-};
-
-/**
- * --------------------------------------------------
- * Check
- * --------------------------------------------------
- */
-
-export type CheckParams = {
-  redirectTo?: string;
-};
-
-export type CheckResponse = Awaited<ReturnType<AuthProvider["check"]>>;
-
-/**
- * --------------------------------------------------
- * OnError
- * --------------------------------------------------
- */
-
-export type OnErrorResponse = Awaited<ReturnType<AuthProvider["onError"]>>;
-
-/**
- * **************************************************
- * Client
- * **************************************************
- */
 
 class AuthClient extends Client {
   async login(params: LoginParams): Promise<AuthActionResponse> {
@@ -84,7 +24,6 @@ class AuthClient extends Client {
         },
         method: "POST",
         url: "/api/method/login",
-        withCredentials: true,
       });
 
       return {
@@ -93,17 +32,11 @@ class AuthClient extends Client {
       };
     }
     catch (error: unknown) {
-      if (isAxiosError(error)) {
-        if (error.response?.status === HttpStatusCode.Unauthorized) {
-          return {
-            error: new Error("Invalid username or password."),
-            success: false,
-          };
-        }
-      }
-
       return {
-        error: new Error("An unknown error occurred while logging in."),
+        error: handleUnkownError({
+          error,
+          errorWhile: "logging in",
+        }),
         success: false,
       };
     }
@@ -116,7 +49,6 @@ class AuthClient extends Client {
       await this.instance.request({
         method: "POST",
         url: "/api/method/logout",
-        withCredentials: true,
       });
 
       return {
@@ -126,7 +58,10 @@ class AuthClient extends Client {
     }
     catch (error: unknown) {
       return {
-        error: new Error("An unknown error occurred while logging out."),
+        error: handleUnkownError({
+          error,
+          errorWhile: "logging out",
+        }),
         redirectTo,
         success: false,
       };
@@ -147,28 +82,23 @@ class AuthClient extends Client {
       };
     }
     catch (error: unknown) {
-      if (isAxiosError(error)) {
-        if (error.response?.status === HttpStatusCode.Forbidden) {
-          return {
-            authenticated: false,
-            error: new Error("Not logged in."),
-          };
-        }
-      }
-
       return {
         authenticated: false,
-        error: new Error("An unknown error occurred while checking credentials."),
+        error: handleUnkownError({
+          error,
+          errorWhile: "checking authentication",
+        }),
       };
     }
   }
 
   // eslint-disable-next-line class-methods-use-this
   onError(error: unknown): Promise<OnErrorResponse> {
-    const response: OnErrorResponse = {};
-    if (error instanceof Error) {
-      response.error = error;
-    }
+    const response: OnErrorResponse = {
+      error: handleUnkownError({
+        error,
+      }),
+    };
 
     return Promise.resolve(response);
   }

@@ -10,11 +10,15 @@
     "Frappe"
   ],
   "scripts": {
+    "build": "tsc",
     "dev": "tsc --watch --preserveWatchOutput",
+
     "test": "jest",
+    "test:unit": "jest --testPathPattern=test/unit",
+    "test:integration": "jest --testPathPattern=test/integration",
+
     "lint:check": "eslint . && npx tsc --noEmit",
-    "lint:fix": "eslint . --fix",
-    "build": "tsc"
+    "lint:fix": "eslint . --fix"
   },
   "author": "pipech@gmail.com",
   "license": "MIT",
