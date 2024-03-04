@@ -1,25 +1,26 @@
 {
   "name": "refine-frappe-provider",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Frappe provider for refine.dev",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "module": "dist/esm/index.js",
   "type": "module",
+  "scripts": {
+    "build": "tsup --minify --format esm,cjs,iife --legacy-output",
+    "dev": "tsup --watch --format esm,cjs,iife --legacy-output",
+    "test": "jest",
+    "test:unit": "jest --testPathPattern=test/unit",
+    "test:integration": "jest --testPathPattern=test/integration",
+    "lint:check": "eslint . && npx tsc --noEmit",
+    "lint:fix": "eslint . --fix"
+  },
+  "author": "pipech@gmail.com",
+  "license": "MIT",
   "keywords": [
     "Refine",
     "Frappe"
   ],
-  "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch --preserveWatchOutput",
-
-    "test": "jest",
-    "test:unit": "jest --testPathPattern=test/unit",
-    "test:integration": "jest --testPathPattern=test/integration",
-
-    "lint:check": "eslint . && npx tsc --noEmit",
-    "lint:fix": "eslint . --fix"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/pipech/refine-frappe-provider.git"
@@ -27,9 +28,10 @@
   "bugs": {
     "url": "https://github.com/pipech/refine-frappe-provider/issues"
   },
-  "homepage": "https://github.com/pipech/refine-frappe-provider",
-  "author": "pipech@gmail.com",
-  "license": "MIT",
+  "dependencies": {
+    "@refinedev/core": "^4.47.2",
+    "axios": "^1.6.7"
+  },
   "devDependencies": {
     "@eslint/js": "^8.57.0",
     "@jest/globals": "^29.7.0",
@@ -46,10 +48,7 @@
     "nock": "^13.5.4",
     "tough-cookie": "^4.1.3",
     "ts-jest": "^29.1.2",
+    "tsup": "^8.0.2",
     "typescript": "^5.3.3"
-  },
-  "dependencies": {
-    "@refinedev/core": "^4.47.2",
-    "axios": "^1.6.7"
   }
 }

@@ -1,3 +1,5 @@
+import { type AuthProvider } from "@refinedev/core";
+
 import { Client, ClientParams } from "@/client";
 import { handleUnkownError } from "@/utils";
 
@@ -13,8 +15,17 @@ import {
 export type AuthParams = ClientParams;
 
 class AuthClient extends Client {
+  provider(): AuthProvider {
+    return {
+      check: this.check.bind(this),
+      login: this.login.bind(this),
+      logout: this.logout.bind(this),
+      onError: this.onError.bind(this),
+    };
+  }
+
   async login(params: LoginParams): Promise<AuthActionResponse> {
-    const { pwd, redirectTo, usr } = params;
+    const { pwd, redirectTo = "/", usr } = params;
 
     try {
       await this.instance.request({
@@ -37,13 +48,14 @@ class AuthClient extends Client {
           error,
           errorWhile: "logging in",
         }),
+        redirectTo,
         success: false,
       };
     }
   }
 
   async logout(params: LogoutParams): Promise<AuthActionResponse> {
-    const { redirectTo } = params;
+    const { redirectTo = "/" } = params || {};
 
     try {
       await this.instance.request({
@@ -68,13 +80,14 @@ class AuthClient extends Client {
     }
   }
 
-  async check(params: CheckParams): Promise<CheckResponse> {
-    const { redirectTo } = params;
+  async check(params?: CheckParams): Promise<CheckResponse> {
+    const { redirectTo = "/" } = params || {};
 
     try {
-      await this.instance.post(
-        "/api/method/frappe.auth.get_logged_user",
-      );
+      await this.instance.request({
+        method: "GET",
+        url: "/api/method/frappe.auth.get_logged_user",
+      });
 
       return {
         authenticated: true,
@@ -88,6 +101,7 @@ class AuthClient extends Client {
           error,
           errorWhile: "checking authentication",
         }),
+        redirectTo,
       };
     }
   }

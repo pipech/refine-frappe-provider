@@ -9,16 +9,7 @@ const dataProvider = (
 ): DataProvider => {
   const client = new DataClient(params);
 
-  return {
-    create: client.create,
-    custom: client.custom,
-    deleteOne: client.deleteOne,
-    getApiUrl: client.getApiUrl,
-    getList: client.getList,
-    getMany: client.getMany,
-    getOne: client.getOne,
-    update: client.update,
-  };
+  return client.provider();
 };
 
 export default dataProvider;
