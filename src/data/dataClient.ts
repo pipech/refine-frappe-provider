@@ -1,4 +1,5 @@
 import {
+  type DataProvider,
   type BaseRecord,
   type GetListParams,
   type GetListResponse,
@@ -29,13 +30,20 @@ import {
 
 export type DataParams = ClientParams;
 
-/**
- * **************************************************
- * Client
- * **************************************************
- */
-
 class DataClient extends Client {
+  provider(): DataProvider {
+    return {
+      create: this.create.bind(this),
+      custom: this.custom.bind(this),
+      deleteOne: this.deleteOne.bind(this),
+      getApiUrl: this.getApiUrl.bind(this),
+      getList: this.getList.bind(this),
+      getMany: this.getMany.bind(this),
+      getOne: this.getOne.bind(this),
+      update: this.update.bind(this),
+    };
+  }
+
   async getList<
     TData extends BaseRecord = BaseRecord,
   >(

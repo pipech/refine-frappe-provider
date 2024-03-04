@@ -10,6 +10,12 @@ import { tCanParams } from "./accessControlTransformer";
 export type AccessControlParams = ClientParams;
 
 class AccessControlClient extends Client {
+  provider() {
+    return {
+      can: this.can.bind(this),
+    };
+  }
+
   async can(params: CanParams): Promise<CanReturnType> {
     const fpParams = tCanParams(params);
 

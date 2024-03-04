@@ -1,22 +1,30 @@
 {
-  "include": ["src", "test"],
+  "include": [
+    "src",
+    "test"
+  ],
   "compilerOptions": {
     "target": "ESNext",
-    "module": "commonjs",
+    "module": "ESNext",
     "lib": [
       "ESNext",
       "DOM",
     ],
+    "moduleResolution": "Node",
     "outDir": "dist",
+    "importHelpers": true,
     "declaration": true,
     "sourceMap": true,
     "baseUrl": ".",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     "strict": true,
     "skipLibCheck": true,
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": ["node"],
   }
 }

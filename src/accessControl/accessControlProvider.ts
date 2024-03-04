@@ -9,9 +9,7 @@ const accessControlProvider = (
 ): AccessControlProvider => {
   const client = new AccessControlClient(params);
 
-  return {
-    can: client.can,
-  };
+  return client.provider();
 };
 
 export default accessControlProvider;
