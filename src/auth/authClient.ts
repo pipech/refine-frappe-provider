@@ -17,14 +17,14 @@ export type AuthParams = ClientParams;
 class AuthClient extends Client {
   provider(): AuthProvider {
     return {
-      check: this.check.bind(this),
-      login: this.login.bind(this),
-      logout: this.logout.bind(this),
-      onError: this.onError.bind(this),
+      check: this.check,
+      login: this.login,
+      logout: this.logout,
+      onError: this.onError,
     };
   }
 
-  async login(params: LoginParams): Promise<AuthActionResponse> {
+  login = async (params: LoginParams): Promise<AuthActionResponse> => {
     const { pwd, redirectTo = "/", usr } = params;
 
     try {
@@ -52,9 +52,9 @@ class AuthClient extends Client {
         success: false,
       };
     }
-  }
+  };
 
-  async logout(params: LogoutParams): Promise<AuthActionResponse> {
+  logout = async (params: LogoutParams): Promise<AuthActionResponse> => {
     const { redirectTo = "/" } = params || {};
 
     try {
@@ -78,9 +78,9 @@ class AuthClient extends Client {
         success: false,
       };
     }
-  }
+  };
 
-  async check(params?: CheckParams): Promise<CheckResponse> {
+  check = async (params?: CheckParams): Promise<CheckResponse> => {
     const { redirectTo = "/" } = params || {};
 
     try {
@@ -104,10 +104,10 @@ class AuthClient extends Client {
         redirectTo,
       };
     }
-  }
+  };
 
   // eslint-disable-next-line class-methods-use-this
-  onError(error: unknown): Promise<OnErrorResponse> {
+  onError = (error: unknown): Promise<OnErrorResponse> => {
     const response: OnErrorResponse = {
       error: handleUnkownError({
         error,
@@ -115,7 +115,7 @@ class AuthClient extends Client {
     };
 
     return Promise.resolve(response);
-  }
+  };
 }
 
 export default AuthClient;
