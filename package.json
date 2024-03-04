@@ -1,6 +1,6 @@
 {
   "name": "refine-frappe-provider",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Frappe provider for refine.dev",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
