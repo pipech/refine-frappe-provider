@@ -92,7 +92,7 @@ class DataClient extends Client {
       params: {
         doctype: resource,
         fields: JSON.stringify(meta?.fields || ["name"]),
-        filters: [["name", "in", ids]],
+        filters: JSON.stringify([["name", "in", ids]]),
       },
       url: "/api/method/frappe.client.get_list",
     });
@@ -150,24 +150,24 @@ class DataClient extends Client {
   };
 
   async deleteOne<
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     TData extends BaseRecord = BaseRecord,
     TVariables = object,
   >(
     params: DeleteOneParams<TVariables>,
-  ): Promise<DeleteOneResponse<TData>> {
+  ): Promise<DeleteOneResponse> {
     const { id, resource } = params;
 
-    const { data } = await this.getOne<TData>({
-      id,
-      resource,
-    });
-
-    await this.instance.request({
+    await this.instance.request<"ok">({
       method: "DELETE",
       url: `/api/resource/${resource}/${id}`,
     });
 
-    return { data };
+    return {
+      data: {
+        id,
+      },
+    };
   }
 
   async custom<
