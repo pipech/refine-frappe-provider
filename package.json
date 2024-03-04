@@ -1,6 +1,6 @@
 {
   "name": "refine-frappe-provider",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Frappe provider for refine.dev",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -13,7 +13,8 @@
     "test:unit": "jest --testPathPattern=test/unit",
     "test:integration": "jest --testPathPattern=test/integration",
     "lint:check": "eslint . && npx tsc --noEmit",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "pre-publish": "npm run lint:check && npm run build && npm i --package-lock-only"
   },
   "author": "pipech@gmail.com",
   "license": "MIT",

@@ -12,11 +12,11 @@ export type AccessControlParams = ClientParams;
 class AccessControlClient extends Client {
   provider() {
     return {
-      can: this.can.bind(this),
+      can: this.can,
     };
   }
 
-  async can(params: CanParams): Promise<CanReturnType> {
+  can = async (params: CanParams): Promise<CanReturnType> => {
     const fpParams = tCanParams(params);
 
     const {
@@ -32,7 +32,7 @@ class AccessControlClient extends Client {
     return {
       can: Boolean(has_permission),
     };
-  }
+  };
 }
 
 export default AccessControlClient;

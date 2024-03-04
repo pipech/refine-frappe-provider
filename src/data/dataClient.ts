@@ -33,22 +33,22 @@ export type DataParams = ClientParams;
 class DataClient extends Client {
   provider(): DataProvider {
     return {
-      create: this.create.bind(this),
-      custom: this.custom.bind(this),
-      deleteOne: this.deleteOne.bind(this),
-      getApiUrl: this.getApiUrl.bind(this),
-      getList: this.getList.bind(this),
-      getMany: this.getMany.bind(this),
-      getOne: this.getOne.bind(this),
-      update: this.update.bind(this),
+      create: this.create,
+      custom: this.custom,
+      deleteOne: this.deleteOne,
+      getApiUrl: this.getApiUrl,
+      getList: this.getList,
+      getMany: this.getMany,
+      getOne: this.getOne,
+      update: this.update,
     };
   }
 
-  async getList<
+  getList = async <
     TData extends BaseRecord = BaseRecord,
   >(
     params: GetListParams,
-  ): Promise<GetListResponse<TData>> {
+  ): Promise<GetListResponse<TData>> => {
     const {
       filters,
       meta,
@@ -86,13 +86,13 @@ class DataClient extends Client {
       data,
       total,
     };
-  }
+  };
 
-  async getMany<
+  getMany = async <
     TData extends BaseRecord = BaseRecord,
   >(
     params: GetManyParams,
-  ): Promise<GetManyResponse<TData>> {
+  ): Promise<GetManyResponse<TData>> => {
     const { ids, meta, resource } = params;
 
     const { data } = await this.instance.request<TData[]>({
@@ -106,14 +106,14 @@ class DataClient extends Client {
     });
 
     return { data };
-  }
+  };
 
-  async create<
+  create = async <
     TData extends BaseRecord = BaseRecord,
     TVariables = Partial<TData>,
   >(
     params: CreateParams<TVariables>,
-  ): Promise<CreateResponse<Doc<TData>>> {
+  ): Promise<CreateResponse<Doc<TData>>> => {
     const { resource, variables } = params;
 
     const { data } = await this.instance.request<Doc<TData>>({
@@ -123,14 +123,14 @@ class DataClient extends Client {
     });
 
     return { data };
-  }
+  };
 
-  async update<
+  update = async <
     TData extends BaseRecord = BaseRecord,
     TVariables = Partial<TData>,
   >(
     params: UpdateParams<TVariables>,
-  ): Promise<UpdateResponse<Doc<TData>>> {
+  ): Promise<UpdateResponse<Doc<TData>>> => {
     const { id, resource, variables } = params;
 
     const { data } = await this.instance.request<Doc<TData>>({
@@ -140,13 +140,13 @@ class DataClient extends Client {
     });
 
     return { data };
-  }
+  };
 
-  async getOne<
+  getOne = async <
     TData extends BaseRecord = BaseRecord,
   >(
     params: GetOneParams,
-  ): Promise<GetOneResponse<Doc<TData>>> {
+  ): Promise<GetOneResponse<Doc<TData>>> => {
     const { id, resource } = params;
 
     const { data } = await this.instance.request<Doc<TData>>({
@@ -157,12 +157,12 @@ class DataClient extends Client {
     return { data };
   };
 
-  async deleteOne<
+  deleteOne = async <
     TData extends BaseRecord = BaseRecord,
     TVariables = object,
   >(
     params: DeleteOneParams<TVariables>,
-  ): Promise<DeleteOneResponse<TData>> {
+  ): Promise<DeleteOneResponse<TData>> => {
     const { id, resource } = params;
 
     await this.instance.request<"ok">({
@@ -182,15 +182,15 @@ class DataClient extends Client {
         id,
       },
     } as DeleteOneResponse<TData>;
-  }
+  };
 
-  async custom<
+  custom = async <
     TData extends BaseRecord = BaseRecord,
     TQuery = unknown,
     TPayload = unknown,
   >(
     params: CustomParams<TQuery, TPayload>,
-  ): Promise<CustomResponse<TData>> {
+  ): Promise<CustomResponse<TData>> => {
     const { method, payload, url } = params;
 
     const { data } = await this.instance.request({
@@ -200,11 +200,9 @@ class DataClient extends Client {
     });
 
     return { data };
-  }
+  };
 
-  getApiUrl(): string {
-    return this.url;
-  }
+  getApiUrl = (): string => this.url;
 }
 
 export default DataClient;
