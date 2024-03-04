@@ -16,12 +16,12 @@ export class AxiosCookieJar {
     this.url = client.url;
     this.jar = new ToughCookieJar();
 
-    this.wrapCookiesJar();
+    this.wrapCookiesJar(client);
   }
 
-  wrapCookiesJar() {
-    this.client.instance = wrapper(this.client.instance);
-    this.client.instance.defaults.jar = this.jar;
+  wrapCookiesJar(client: Client) {
+    client.instance = wrapper(client.instance);
+    client.instance.defaults.jar = this.jar;
   }
 
   getCookies() {

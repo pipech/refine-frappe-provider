@@ -22,9 +22,16 @@ const config = [
     rules: {
       // eslint-js
       ...js.configs.all.rules,
+      "camelcase": "off",
       "capitalized-comments": "off",
       "id-length": "off",
       "multiline-comment-style": "off",
+      "no-magic-numbers": ["error", {
+        detectObjects: true,
+        enforceConst: true,
+        ignore: [-1, 0, 1],
+        ignoreArrayIndexes: true,
+      }],
       "no-shadow": ["error", {
         allow: ["params"],
         builtinGlobals: false,
@@ -80,6 +87,7 @@ const config = [
         braceStyle: "stroustrup",
         commaDangle: "always-multiline",
         flat: true,
+        // eslint-disable-next-line no-magic-numbers
         indent: 2,
         jsx: true,
         pluginName: "pluginStylistic",
@@ -103,6 +111,9 @@ const config = [
       "import": pluginImport,
     },
     rules: {
+      // eslint-js
+      "no-shadow": "off",
+
       // PluginImport
       ...pluginImport.configs.recommended.rules,
       ...pluginImport.configs.typescript.rules,
@@ -110,6 +121,7 @@ const config = [
 
       // PluginTypescript
       ...pluginTypescript.configs.strict.rules,
+      "@typescript-eslint/no-shadow": "error",
     },
     settings: {
       "import/parsers": {
@@ -125,9 +137,11 @@ const config = [
     files: ["**/*.test.{js,jsx,ts,tsx}"],
     rules: {
       // eslint-js
-      "camelcase": "off",
       "max-lines-per-function": "off",
       "no-magic-numbers": "off",
+
+      // PluginTypescript
+      "@typescript-eslint/ban-ts-comment": "off",
     },
   },
 ];

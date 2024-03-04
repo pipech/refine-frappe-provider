@@ -63,6 +63,6 @@ describe("login", () => {
     });
 
     expect(r.success).toBe(false);
-    expect(r.error).toEqual(new Error("Invalid username or password."));
+    expect(r.error?.message).toEqual("Invalid login credentials");
   });
 });
