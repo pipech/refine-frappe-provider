@@ -50,9 +50,6 @@ const App = () => (
 
 - Ensure that the response from the Frappe server is configured to set cookies correctly on the Refine site. This requires proper configuration of Cross-Origin Resource Sharing ([CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)) settings.
 
-
-- Since response from `Frappe` server have to set cookies in `Refine` site,  need to be set properly.
-
 ## License
 
 This project is licensed under the [MIT](./license) License.
