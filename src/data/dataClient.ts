@@ -150,12 +150,11 @@ class DataClient extends Client {
   };
 
   async deleteOne<
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     TData extends BaseRecord = BaseRecord,
     TVariables = object,
   >(
     params: DeleteOneParams<TVariables>,
-  ): Promise<DeleteOneResponse> {
+  ): Promise<DeleteOneResponse<TData>> {
     const { id, resource } = params;
 
     await this.instance.request<"ok">({
@@ -163,11 +162,18 @@ class DataClient extends Client {
       url: `/api/resource/${resource}/${id}`,
     });
 
+    /**
+     * Since Frappe only response with "ok" string,
+     * we won't have full data of the deleted record.
+     *
+     * We will return the id of the deleted record instead.
+     */
+
     return {
       data: {
         id,
       },
-    };
+    } as DeleteOneResponse<TData>;
   }
 
   async custom<
