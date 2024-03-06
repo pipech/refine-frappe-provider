@@ -1,3 +1,5 @@
+/* global document */
+
 import { type AuthProvider } from "@refinedev/core";
 
 import { Client, ClientParams } from "@/client";
@@ -84,6 +86,25 @@ class AuthClient extends Client {
     const { redirectTo = "/" } = params || {};
 
     try {
+      /**
+       * `get_logged_user` method doesn't allow Guest
+       * if it's calling by Guest it will response with 403
+       * so we skip it and just return false
+       */
+      if (
+        typeof document !== "undefined"
+        && typeof document.cookie === "string"
+        && (
+          document.cookie === ""
+          || document.cookie.includes("user_id=Guest")
+        )
+      ) {
+        return {
+          authenticated: false,
+          redirectTo,
+        };
+      }
+
       await this.instance.request({
         method: "GET",
         url: "/api/method/frappe.auth.get_logged_user",
@@ -97,10 +118,6 @@ class AuthClient extends Client {
     catch (error: unknown) {
       return {
         authenticated: false,
-        error: handleUnkownError({
-          error,
-          errorWhile: "checking authentication",
-        }),
         redirectTo,
       };
     }
