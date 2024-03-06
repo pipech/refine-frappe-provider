@@ -10,10 +10,11 @@ import { Client, ClientParams } from "@/client";
 import { tCanParams } from "./accessControlTransformer";
 
 export type AccessControlParams = ClientParams;
+export type AccessControlProviderParams = Pick<IAccessControlContext, "options">;
 
 class AccessControlClient extends Client {
   provider(
-    props: Pick<IAccessControlContext, "options"> = {},
+    props: AccessControlProviderParams = {},
   ): AccessControlProvider {
     const { options } = props;
 
