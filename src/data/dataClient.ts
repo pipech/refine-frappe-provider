@@ -19,14 +19,8 @@ import {
 
 import { Client, ClientParams } from "@/client";
 
-import {
-  Doc,
-} from "./dataTypes";
-import {
-  generateFilter,
-  generatePagination,
-  generateSort,
-} from "./utils";
+import { Doc } from "./dataTypes";
+import { generateFilter, generatePagination, generateSort } from "./utils";
 
 export type DataParams = ClientParams;
 
@@ -44,18 +38,10 @@ class DataClient extends Client {
     };
   }
 
-  getList = async <
-    TData extends BaseRecord = BaseRecord,
-  >(
-    params: GetListParams,
+  getList = async <TData extends BaseRecord = BaseRecord>(
+    params: GetListParams
   ): Promise<GetListResponse<TData>> => {
-    const {
-      filters,
-      meta,
-      pagination,
-      resource,
-      sorters,
-    } = params;
+    const { filters, meta, pagination, resource, sorters } = params;
 
     const fpFilters = generateFilter(filters);
     const fpPagination = generatePagination(pagination);
@@ -71,7 +57,7 @@ class DataClient extends Client {
         limit_start: fpPagination.limit_page_start,
         order_by: fpSorter,
       },
-      url: "/api/method/frappe.client.get_list",
+      url: `/api/resource/${resource}`,
     });
     const { data: total } = await this.instance.request<number>({
       method: "GET",
@@ -79,7 +65,7 @@ class DataClient extends Client {
         doctype: resource,
         filters: JSON.stringify(fpFilters),
       },
-      url: "/api/method/frappe.desk.reportview.get_count",
+      url: `/api/v2/doctype/${resource}/count`,
     });
 
     return {
@@ -88,10 +74,8 @@ class DataClient extends Client {
     };
   };
 
-  getMany = async <
-    TData extends BaseRecord = BaseRecord,
-  >(
-    params: GetManyParams,
+  getMany = async <TData extends BaseRecord = BaseRecord>(
+    params: GetManyParams
   ): Promise<GetManyResponse<TData>> => {
     const { ids, meta, resource } = params;
 
@@ -102,7 +86,7 @@ class DataClient extends Client {
         fields: JSON.stringify(meta?.fields || ["name"]),
         filters: JSON.stringify([["name", "in", ids]]),
       },
-      url: "/api/method/frappe.client.get_list",
+      url: `/api/resource/${resource}`,
     });
 
     return { data };
@@ -110,9 +94,9 @@ class DataClient extends Client {
 
   create = async <
     TData extends BaseRecord = BaseRecord,
-    TVariables = Partial<TData>,
+    TVariables = Partial<TData>
   >(
-    params: CreateParams<TVariables>,
+    params: CreateParams<TVariables>
   ): Promise<CreateResponse<Doc<TData>>> => {
     const { resource, variables } = params;
 
@@ -127,9 +111,9 @@ class DataClient extends Client {
 
   update = async <
     TData extends BaseRecord = BaseRecord,
-    TVariables = Partial<TData>,
+    TVariables = Partial<TData>
   >(
-    params: UpdateParams<TVariables>,
+    params: UpdateParams<TVariables>
   ): Promise<UpdateResponse<Doc<TData>>> => {
     const { id, resource, variables } = params;
 
@@ -142,10 +126,8 @@ class DataClient extends Client {
     return { data };
   };
 
-  getOne = async <
-    TData extends BaseRecord = BaseRecord,
-  >(
-    params: GetOneParams,
+  getOne = async <TData extends BaseRecord = BaseRecord>(
+    params: GetOneParams
   ): Promise<GetOneResponse<Doc<TData>>> => {
     const { id, resource } = params;
 
@@ -159,9 +141,9 @@ class DataClient extends Client {
 
   deleteOne = async <
     TData extends BaseRecord = BaseRecord,
-    TVariables = object,
+    TVariables = object
   >(
-    params: DeleteOneParams<TVariables>,
+    params: DeleteOneParams<TVariables>
   ): Promise<DeleteOneResponse<TData>> => {
     const { id, resource } = params;
 
@@ -187,9 +169,9 @@ class DataClient extends Client {
   custom = async <
     TData extends BaseRecord = BaseRecord,
     TQuery = unknown,
-    TPayload = unknown,
+    TPayload = unknown
   >(
-    params: CustomParams<TQuery, TPayload>,
+    params: CustomParams<TQuery, TPayload>
   ): Promise<CustomResponse<TData>> => {
     const { method, payload, url } = params;
 
