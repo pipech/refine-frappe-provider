@@ -50,7 +50,6 @@ class DataClient extends Client {
     const { data } = await this.instance.request<TData[]>({
       method: "GET",
       params: {
-        doctype: resource,
         fields: JSON.stringify(meta?.fields || ["name"]),
         filters: JSON.stringify(fpFilters),
         limit: fpPagination.limit_page_length,
@@ -62,7 +61,6 @@ class DataClient extends Client {
     const { data: total } = await this.instance.request<number>({
       method: "GET",
       params: {
-        doctype: resource,
         filters: JSON.stringify(fpFilters),
       },
       url: `/api/v2/doctype/${resource}/count`,
@@ -82,7 +80,6 @@ class DataClient extends Client {
     const { data } = await this.instance.request<TData[]>({
       method: "GET",
       params: {
-        doctype: resource,
         fields: JSON.stringify(meta?.fields || ["name"]),
         filters: JSON.stringify([["name", "in", ids]]),
       },
