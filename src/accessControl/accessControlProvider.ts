@@ -2,16 +2,22 @@ import {
   type AccessControlProvider,
 } from "@refinedev/core";
 
-import AccessControlClient, { AccessControlParams } from "./accessControlClient";
+import AccessControlClient, {
+  type AccessControlParams,
+  type AccessControlProviderParams,
+} from "./accessControlClient";
 
 const accessControlProvider = (
-  params: AccessControlParams,
+  params: AccessControlParams & AccessControlProviderParams,
 ): AccessControlProvider => {
-  const client = new AccessControlClient(params);
+  const {
+    options = {},
+    ...clientParams
+  } = params;
 
-  return {
-    can: client.can,
-  };
+  const client = new AccessControlClient(clientParams);
+
+  return client.provider({ options });
 };
 
 export default accessControlProvider;

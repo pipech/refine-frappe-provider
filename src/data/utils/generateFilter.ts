@@ -43,6 +43,26 @@ const CRUD_OPERATORS: Record<CrudOperators, string | null> = {
 };
 
 /**
+ * Sanitizes the given value based on the provided operator.
+ * If the value is a string, it applies the appropriate sanitization based on the operator.
+ * If the value is not a string, it returns the value as is.
+ *
+ * @param value - The value to be sanitized.
+ * @param operator - The operator to determine the type of sanitization to be applied.
+ * @returns The sanitized value.
+ */
+const sanitizeValue = (value: any, operator: CrudOperators): string => {
+  if (typeof value === "string") {
+    const SanatizationMap: Record<CrudOperators | any, string | undefined> = {
+      contains: `%${value}%`,
+      ncontains: `%${value}%`,
+    };
+    return SanatizationMap[operator] ?? value;
+  }
+  return value;
+};
+
+/**
  * Maps a CRUD operator to its corresponding string representation.
  * @param operator - The CRUD operator to map.
  * @returns The string representation of the mapped operator.
@@ -57,7 +77,7 @@ export const mapOperator = (operator: CrudOperators): string => {
     return mappedOperator;
   }
   throw new Error(
-    `[refine-frappe]: \`operator: ${operator}\` is not supported.`,
+    `[refine-frappe]: \`operator: ${operator}\` is not supported.`
   );
 };
 
@@ -75,13 +95,12 @@ export const mapOperator = (operator: CrudOperators): string => {
  */
 const transformFilter = (filter: CrudFilter): FrappeFilter => {
   if (!("field" in filter)) {
-    throw new Error(
-      `[refine-frappe]: \`filter\` must be a logical filter.`,
-    );
+    throw new Error(`[refine-frappe]: \`filter\` must be a logical filter.`);
   }
   const { field, operator, value } = filter;
   const mappedOperator = mapOperator(operator);
-  return [field, mappedOperator, value];
+  const sanitizedValue = sanitizeValue(value, operator);
+  return [field, mappedOperator, sanitizedValue];
 };
 
 /**
