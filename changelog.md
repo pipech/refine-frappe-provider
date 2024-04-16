@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Allow `options` props to be pass to `accessControlProvider`
+- Export `authType`
 
 ## [0.0.5] - 2024-03-06
 
