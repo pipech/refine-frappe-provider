@@ -4,6 +4,7 @@ import pluginTypescript from "@typescript-eslint/eslint-plugin";
 import parserTypescript from "@typescript-eslint/parser";
 import pluginImport from "eslint-plugin-import";
 import pluginPerfectionist from "eslint-plugin-perfectionist";
+import globals from "globals";
 
 /** @type { import("eslint").Linter.FlatConfig[] } */
 const config = [
@@ -15,6 +16,11 @@ const config = [
   },
   {
     files: ["**/*.{js,jsx,ts,tsx}"],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+      },
+    },
     plugins: {
       pluginPerfectionist,
       pluginStylistic,
@@ -25,11 +31,13 @@ const config = [
       "camelcase": "off",
       "capitalized-comments": "off",
       "id-length": "off",
+      "max-lines-per-function": "off",
+      "max-statements": "off",
       "multiline-comment-style": "off",
       "no-magic-numbers": ["error", {
         detectObjects: true,
         enforceConst: true,
-        ignore: [-1, 0, 1],
+        ignore: [-1, 0, 1, 100],
         ignoreArrayIndexes: true,
       }],
       "no-shadow": ["error", {

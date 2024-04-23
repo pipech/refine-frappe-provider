@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Update `eslint`, add `globals`
+- Update `custom` dataClient
+
 ### Fixed
 
 - Allow `options` props to be pass to `accessControlProvider`

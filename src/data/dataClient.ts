@@ -17,7 +17,7 @@ import {
   type CustomResponse,
 } from "@refinedev/core";
 
-import { Client, ClientParams } from "@/client";
+import { Client, type ClientParams } from "@/client";
 
 import {
   Doc,
@@ -191,11 +191,13 @@ class DataClient extends Client {
   >(
     params: CustomParams<TQuery, TPayload>,
   ): Promise<CustomResponse<TData>> => {
-    const { method, payload, url } = params;
+    const { headers, method, payload, query, url } = params;
 
     const { data } = await this.instance.request({
       data: payload,
+      headers,
       method,
+      params: query,
       url,
     });
 

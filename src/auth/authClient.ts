@@ -1,5 +1,3 @@
-/* global document */
-
 import { type AuthProvider } from "@refinedev/core";
 
 import { Client, ClientParams } from "@/client";
