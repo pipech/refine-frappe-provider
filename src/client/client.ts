@@ -1,10 +1,9 @@
-import {
-  type HttpError,
-} from "@refinedev/core";
 import axios, {
   type AxiosInstance,
   type CreateAxiosDefaults,
 } from "axios";
+
+import { parseError } from "./utils";
 
 export interface ClientParams {
   url: string;
@@ -49,16 +48,8 @@ export class Client {
         return response;
       },
       (error) => {
-        const errorMsg = error.response?.data?.message
-          || error.response?.statusText
-          || error.response?.data?.exc_type;
-
-        const customError: HttpError = {
-          message: errorMsg,
-          statusCode: error.response?.status,
-        };
-
-        return Promise.reject(customError);
+        const httpError = parseError(error);
+        return Promise.reject(httpError);
       },
     );
   }
