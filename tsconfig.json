@@ -10,7 +10,7 @@
       "ESNext",
       "DOM",
     ],
-    "moduleResolution": "Node",
+    "moduleResolution": "Bundler",
     "outDir": "dist",
     "importHelpers": true,
     "declaration": true,

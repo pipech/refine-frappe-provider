@@ -1,9 +1,10 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-  clean: false,
+  clean: true,
+  dts: true,
   entry: ["src/index.ts"],
-  onSuccess: "tsc --project tsconfig.declarations.json",
+  format: ["cjs", "esm"],
   platform: "browser",
   sourcemap: true,
   splitting: false,

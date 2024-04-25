@@ -4,10 +4,7 @@ import { Client, type ClientParams } from "@/client";
 
 import { Doc } from "../dataTypes";
 
-interface UploadFileProps {
-  url: ClientParams["url"];
-  axiosConfig?: ClientParams["axiosConfig"];
-
+interface UploadFileProps extends ClientParams {
   file: File;
   isPrivate: boolean;
   folder?: string;
