@@ -9,12 +9,7 @@ const authProvider = (
 ): AuthProvider => {
   const client = new AuthClient(params);
 
-  return {
-    check: client.check,
-    login: client.login,
-    logout: client.logout,
-    onError: client.onError,
-  };
+  return client.provider();
 };
 
 export default authProvider;
